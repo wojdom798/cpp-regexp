@@ -6,19 +6,55 @@ using namespace std;
 vector<string> split_string(string);
 void printDatabase(vector<vector<string>>& database);
 void printGmailAsc(vector<vector<string>>& database);
+bool nameComparator(string a, string b);
 
 
 int main()
 {
-    int N;
-    cin >> N;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    int N = 30;
+    // cin >> N;
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     vector<vector<string>> databaseTable;
 
+    // 30
+    string inputList[] = {
+      "riya riya@gmail.com",
+      "julia julia@julia.me",
+      "julia sjulia@gmail.com",
+      "julia julia@gmail.com",
+      "samantha samantha@gmail.com",
+      "tanya tanya@gmail.com",
+      "riya ariya@gmail.com",
+      "julia bjulia@julia.me",
+      "julia csjulia@gmail.com",
+      "julia djulia@gmail.com",
+      "samantha esamantha@gmail.com",
+      "tanya ftanya@gmail.com",
+      "riya riya@live.com",
+      "julia julia@live.com",
+      "julia sjulia@live.com",
+      "julia julia@live.com",
+      "samantha samantha@live.com",
+      "tanya tanya@live.com",
+      "riya ariya@live.com",
+      "julia bjulia@live.com",
+      "julia csjulia@live.com",
+      "julia djulia@live.com",
+      "samantha esamantha@live.com",
+      "tanya ftanya@live.com",
+      "riya gmail@riya.com",
+      "priya priya@gmail.com",
+      "preeti preeti@gmail.com",
+      "alice1 alice@alicegmail.com",
+      "alice2 alice@gmail.com",
+      "alice3 gmail.alice@gmail.com" };
+
+
+
     for (int N_itr = 0; N_itr < N; N_itr++) {
         string firstNameEmailID_temp;
-        getline(cin, firstNameEmailID_temp);
+        firstNameEmailID_temp = inputList[N_itr];
 
         vector<string> firstNameEmailID = split_string(firstNameEmailID_temp);
 
@@ -29,7 +65,7 @@ int main()
         databaseTable.push_back(firstNameEmailID);
     }
 
-    printDatabase(databaseTable);
+    // printDatabase(databaseTable);
 
     printGmailAsc(databaseTable);
 
@@ -73,13 +109,24 @@ void printDatabase(vector<vector<string>>& database) {
 
 // solution
 void printGmailAsc(vector<vector<string>>& database) {
-  regex rx("[\\w]*@gmail.com");
-  cmatch match;
-  regex_match("sjulia@gmail.com", match, rx);
-  if (match.size()) {
-    cout << "matched: " << match[0] << endl;
-  } else {
-    cout << "no matches." << endl;
+  regex rx("[\\w]*.[\\w]*@gmail.com");
+  smatch match;
+  vector<string> gmailNames;
+
+  for (int i = 0; i < database.size(); i++) {
+    regex_match(database[i][1], match, rx);
+    if (match.size()) {
+      gmailNames.push_back(database[i][0]);
+    }
   }
-  
+
+  sort(gmailNames.begin(), gmailNames.end(), nameComparator);
+
+  for (int i = 0; i < gmailNames.size(); i++) {
+    cout << gmailNames[i] << endl;
+  }
+}
+
+bool nameComparator(string a, string b) {
+  return a < b;
 }
